@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.venv/
+
+# KiCad
+*-backups/
+*.kicad_prl
+fp-info-cache
+_autosave-*
+*.lck
+~*.lck
+hardware/kicad/**/production/
+
+# CAD / slicer output
+*.gcode
+*.3mf.bak

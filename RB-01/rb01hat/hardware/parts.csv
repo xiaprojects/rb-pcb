@@ -1,0 +1,34 @@
+ref,kind,priority,function,part,bus,i2c_addr,supply,location,dnp,notes
+J1,connector,0,Pi 5 GPIO header (HAT side),2x20 female 2.54 mm (proto kit),,,,HAT-EDGE,no,Soldered on HAT underside; pin 1 = square pad at the notch end
+U1,module,1,9-axis IMU,ICM-20948 breakout (1.8 V VDDIO + level shifter),I2C1,0x69,3V3,HAT-Z1,no,RB-EMS scheme: IMU/BARO/MAG on I2C1. Adafruit 4554 / SparkFun SEN-15335 default 0x69; check the address the RB-01 IMU driver expects. INT not wired: no free GPIO
+U2,module,2,Air quality T/RH/P/gas,BME680 breakout,I2C0,0x77,3V3,HAT-Z2,no,RB-EMS v3.0 scheme: I2C AIR QUALITY on I2C0 (GPIO0/1). Adafruit = 0x77; generic modules often 0x76 - set i2c_addr to the fitted module
+U3,module,3,Thermocouple CHT1,MAX31856 breakout,SPI1,,3V3,HAT-Z3,no,ems-chtegt.json cht1: /dev/spidev1.0 CS GPIO13
+U4,module,3,Thermocouple CHT2,MAX31856 breakout,SPI1,,3V3,HAT-Z3,no,ems-chtegt.json cht2: /dev/spidev1.0 CS GPIO26
+U5,module,3,Thermocouple CHT3,MAX31856 breakout,SPI1,,3V3,HAT-Z3,no,ems-chtegt.json cht3: /dev/spidev1.0 CS GPIO6
+U6,module,3,Thermocouple CHT4,MAX31856 breakout,SPI1,,3V3,HAT-Z3,no,ems-chtegt.json cht4: /dev/spidev1.0 CS GPIO27
+U7,ic,4,Differential pressure (airspeed),MS4525DO-DS3AI001DP,I2C1,0x28,3V3,HAT-Z4,no,Not in rb-ems-go: placed on the I2C1 air-data bus (assumption). DS = dual side port; 3 = 3.3 V; A = 10-90 %; I = 0x28 (J 0x36; K 0x46; 0-9 = 0x48-0x51); avoid -L/-M low-power options
+U8,module,5,4-ch 16-bit ADC,ADS1115 breakout,I2C0,0x48,5V,HAT-Z5,no,ems-adc.json: dev 0 addr 0x48; A0 oil temp probe; A1 rail50 (v3.0 image: fuel pressure); A2 battery; A3 oil pressure. VDD 5 V keeps the +/-6.144 V scaling; I2C through U14; inputs 0-5 V
+U9,module,6,Thermocouple EGT1,MAX31856 breakout,SPI0,,3V3,EXT,no,ems-chtegt.json egt1: /dev/spidev0.0 CS GPIO23 (config still says MAX31855 / spiMode 0)
+U10,module,6,Thermocouple EGT2,MAX31856 breakout,SPI0,,3V3,EXT,no,ems-chtegt.json egt2: /dev/spidev0.0 CS GPIO8 (needs dtoverlay=spi0-0cs)
+U11,module,6,Thermocouple EGT3,MAX31856 breakout,SPI0,,3V3,EXT,no,ems-chtegt.json egt3: /dev/spidev0.0 CS GPIO24
+U12,module,6,Thermocouple EGT4,MAX31856 breakout,SPI0,,3V3,EXT,no,ems-chtegt.json egt4: /dev/spidev0.0 CS GPIO7 (needs dtoverlay=spi0-0cs)
+U13,ic,0,HAT ID EEPROM,CAT24C32 (SOIC-8),I2C0,0x50,3V3,HAT-EEPROM,yes,Optional; shares I2C0 with U2/U8 (no address clash)
+U14,module,5,I2C0 level translator 3V3 <-> 5V for U8,BSS138 4-ch bidirectional level-shifter module (or PCA9306 breakout),,,,HAT-Z5,no,LV = 3V3; HV = 5V. Isolates when the Pi 3V3 is off (STANDBY)
+R1,passive,3,CHT1 CS pull-up,10k,,,,HAT-Z3,no,Keeps the chip deselected while GPIOs float at boot
+R2,passive,3,CHT2 CS pull-up,10k,,,,HAT-Z3,no,
+R3,passive,3,CHT3 CS pull-up,10k,,,,HAT-Z3,no,
+R4,passive,3,CHT4 CS pull-up,10k,,,,HAT-Z3,no,
+R5,passive,6,EGT1 CS pull-up,10k,,,,HAT-J11,no,On HAT next to J11 so CS stays defined with the ribbon unplugged
+R6,passive,6,EGT2 CS pull-up,10k,,,,HAT-J11,no,
+R7,passive,6,EGT3 CS pull-up,10k,,,,HAT-J11,no,
+R8,passive,6,EGT4 CS pull-up,10k,,,,HAT-J11,no,
+R11,passive,2,I2C0 SDA pull-up,3.9k,,,,HAT-EDGE,no,The Pi has no pull-ups on GPIO0/1; 3.9k = HAT+ ID-pin value
+R12,passive,2,I2C0 SCL pull-up,3.9k,,,,HAT-EDGE,no,
+R13,passive,0,EEPROM WP pull-up,1k,,,,HAT-EEPROM,yes,Stiff pull-up (CAT24C32 has internal WP pull-down); ground TP1 to program
+C1,passive,0,3V3 bulk capacitor,22uF 10V (electrolytic or X5R),,,,HAT-EDGE,no,Close to J1 pin 1/17 entry of the 3V3 rail
+C2,passive,0,3V3 HF decoupling,100nF X7R,,,,HAT-EDGE,no,Next to C1
+C3,passive,4,MS4525DO decoupling,100nF X7R,,,,HAT-Z4,no,TE datasheet: required; within 2 cm of the sensor supply pin (module users: check it is on the module)
+J2,connector,5,ADC analog inputs A0-A3 + GND,5-pos screw terminal 3.5 or 5.08 mm,,,,HAT-Z5,no,Inputs 0-5 V max (ADS1115 at 5 V). 12 V battery needs an external divider
+J11,connector,6,EGT extension harness (HAT side),2x5 IDC box header 2.54 mm,,,,HAT-J11,no,10-way ribbon to J12
+J12,connector,6,EGT extension harness (EXT side),2x5 IDC box header 2.54 mm,,,,EXT,no,
+TP1,connector,0,EEPROM WP test pad,test pad,,,,HAT-EEPROM,yes,Ground to disable write-protect while flashing

@@ -1,0 +1,190 @@
+net,ref,pin,note
+# Source of truth for every electrical connection. One row per node.
+# Pin mapping follows the RB-EMS configuration in rb-ems-go (ems-chtegt.json / ems-adc.json); check with `make rbems`.
+# Rows of the same net are listed in physical daisy-chain order (the DIY wiring list follows it).
+# Power nets (3V3 5V GND) are rails: every node connects to the rail.
+# Net NC = deliberately unconnected pin (documents intent; not wired).
+3V3,J1,1,Pi 3V3 (switched off in STANDBY -> sensors follow the Pi)
+3V3,J1,17,Second 3V3 pin shares the load
+3V3,C1,1,Bulk cap at rail entry (+)
+3V3,C2,1,
+3V3,R11,1,
+3V3,R12,1,
+3V3,U1,VIN,
+3V3,U2,VIN,
+3V3,U3,VIN,
+3V3,U4,VIN,
+3V3,U5,VIN,
+3V3,U6,VIN,
+3V3,R1,1,
+3V3,R2,1,
+3V3,R3,1,
+3V3,R4,1,
+3V3,U7,VDD,
+3V3,C3,1,Within 2 cm of U7
+3V3,U14,LV,Translator low side follows the Pi 3V3
+3V3,R5,1,
+3V3,R6,1,
+3V3,R7,1,
+3V3,R8,1,
+3V3,J11,1,
+3V3,J12,1,
+3V3,U9,VIN,
+3V3,U10,VIN,
+3V3,U11,VIN,
+3V3,U12,VIN,
+3V3,U13,VCC,
+3V3,R13,1,
+5V,J1,4,Only the ADS1115 side of the translator uses 5 V
+5V,U14,HV,
+5V,U8,VDD,
+GND,J1,6,
+GND,J1,20,Next to SPI0 MOSI/MISO
+GND,J1,25,Next to SPI0 SCLK
+GND,J1,39,Next to SPI1 SCLK
+GND,C1,2,
+GND,C2,2,
+GND,U1,GND,
+GND,U2,GND,
+GND,U3,GND,
+GND,U4,GND,
+GND,U5,GND,
+GND,U6,GND,
+GND,U7,GND,
+GND,C3,2,
+GND,U14,GND,
+GND,U8,GND,
+GND,U8,ADDR,ADDR to GND selects 0x48 (ems-adc.json addr)
+GND,J2,5,Analog ground return
+GND,J11,2,
+GND,J12,2,
+GND,J11,6,Extra ground in the ribbon (between MISO and the CS lines)
+GND,J12,6,
+GND,U9,GND,
+GND,U10,GND,
+GND,U11,GND,
+GND,U12,GND,
+GND,U13,VSS,
+GND,U13,A0,
+GND,U13,A1,
+GND,U13,A2,
+I2C1_SDA,J1,3,IMU / air-data bus (RB-EMS scheme)
+I2C1_SDA,U1,SDA,
+I2C1_SDA,U7,SDA,
+I2C1_SCL,J1,5,
+I2C1_SCL,U1,SCL,
+I2C1_SCL,U7,SCL,
+I2C0_SDA,J1,27,RB-EMS: ADS1115 + air quality on I2C0 (dtoverlay=i2c0-pi5)
+I2C0_SDA,R11,2,
+I2C0_SDA,U2,SDA,
+I2C0_SDA,U13,SDA,
+I2C0_SDA,U14,LSDA,
+I2C0_SCL,J1,28,
+I2C0_SCL,R12,2,
+I2C0_SCL,U2,SCL,
+I2C0_SCL,U13,SCL,
+I2C0_SCL,U14,LSCL,
+I2C0_SDA_5V,U14,HSDA,5 V side of the translator
+I2C0_SDA_5V,U8,SDA,
+I2C0_SCL_5V,U14,HSCL,
+I2C0_SCL_5V,U8,SCL,
+SPI1_SCLK,J1,40,CHT bank (ems-chtegt.json /dev/spidev1.0)
+SPI1_SCLK,U3,SCK,
+SPI1_SCLK,U4,SCK,
+SPI1_SCLK,U5,SCK,
+SPI1_SCLK,U6,SCK,
+SPI1_MOSI,J1,38,GPIO20 = SPI1 MOSI (the v3.0 image labels it MISO)
+SPI1_MOSI,U3,SDI,
+SPI1_MOSI,U4,SDI,
+SPI1_MOSI,U5,SDI,
+SPI1_MOSI,U6,SDI,
+SPI1_MISO,J1,35,GPIO19 = SPI1 MISO (the v3.0 image labels it MOSI)
+SPI1_MISO,U3,SDO,
+SPI1_MISO,U4,SDO,
+SPI1_MISO,U5,SDO,
+SPI1_MISO,U6,SDO,
+CHT1_CS_N,J1,33,GPIO13
+CHT1_CS_N,R1,2,
+CHT1_CS_N,U3,CS,
+CHT2_CS_N,J1,37,GPIO26
+CHT2_CS_N,R2,2,
+CHT2_CS_N,U4,CS,
+CHT3_CS_N,J1,31,GPIO6
+CHT3_CS_N,R3,2,
+CHT3_CS_N,U5,CS,
+CHT4_CS_N,J1,13,GPIO27
+CHT4_CS_N,R4,2,
+CHT4_CS_N,U6,CS,
+SPI0_SCLK,J1,23,EGT bank (ems-chtegt.json /dev/spidev0.0)
+SPI0_SCLK,J11,3,
+SPI0_SCLK,J12,3,
+SPI0_SCLK,U9,SCK,
+SPI0_SCLK,U10,SCK,
+SPI0_SCLK,U11,SCK,
+SPI0_SCLK,U12,SCK,
+SPI0_MOSI,J1,19,
+SPI0_MOSI,J11,4,
+SPI0_MOSI,J12,4,
+SPI0_MOSI,U9,SDI,
+SPI0_MOSI,U10,SDI,
+SPI0_MOSI,U11,SDI,
+SPI0_MOSI,U12,SDI,
+SPI0_MISO,J1,21,
+SPI0_MISO,J11,5,
+SPI0_MISO,J12,5,
+SPI0_MISO,U9,SDO,
+SPI0_MISO,U10,SDO,
+SPI0_MISO,U11,SDO,
+SPI0_MISO,U12,SDO,
+EGT1_CS_N,J1,16,GPIO23
+EGT1_CS_N,R5,2,
+EGT1_CS_N,J11,7,
+EGT1_CS_N,J12,7,
+EGT1_CS_N,U9,CS,
+EGT2_CS_N,J1,24,GPIO8 (kernel CE0 must be released: dtoverlay=spi0-0cs)
+EGT2_CS_N,R6,2,
+EGT2_CS_N,J11,8,
+EGT2_CS_N,J12,8,
+EGT2_CS_N,U10,CS,
+EGT3_CS_N,J1,18,GPIO24
+EGT3_CS_N,R7,2,
+EGT3_CS_N,J11,9,
+EGT3_CS_N,J12,9,
+EGT3_CS_N,U11,CS,
+EGT4_CS_N,J1,26,GPIO7 (kernel CE1 must be released: dtoverlay=spi0-0cs)
+EGT4_CS_N,R8,2,
+EGT4_CS_N,J11,10,
+EGT4_CS_N,J12,10,
+EGT4_CS_N,U12,CS,
+ADC_A0,J2,1,ems-adc.json channel 0: oil temperature probe
+ADC_A0,U8,A0,
+ADC_A1,J2,2,ems-adc.json channel 1: rail50 (v3.0 image: fuel pressure)
+ADC_A1,U8,A1,
+ADC_A2,J2,3,ems-adc.json channel 2: battery voltage (external divider)
+ADC_A2,U8,A2,
+ADC_A3,J2,4,ems-adc.json channel 3: oil pressure
+ADC_A3,U8,A3,
+EEPROM_WP,U13,WP,
+EEPROM_WP,R13,2,
+EEPROM_WP,TP1,1,
+NC,U1,AD0,Module default = 0x69
+NC,U1,INT,No free GPIO in the RB-EMS scheme: software polls
+NC,U2,SDO,Module default sets the address (0x76 or 0x77)
+NC,U2,CS,Module pulls CSB high = I2C mode
+NC,U8,ALRT,No free GPIO: rb-ems-go polls the conversion
+NC,U3,FLT,No free GPIO: faults read from the status register (0x0F)
+NC,U4,FLT,
+NC,U5,FLT,
+NC,U6,FLT,
+NC,U9,FLT,
+NC,U10,FLT,
+NC,U11,FLT,
+NC,U12,FLT,
+NC,U3,DRDY,Not used: software polls
+NC,U4,DRDY,
+NC,U5,DRDY,
+NC,U6,DRDY,
+NC,U9,DRDY,
+NC,U10,DRDY,
+NC,U11,DRDY,
+NC,U12,DRDY,

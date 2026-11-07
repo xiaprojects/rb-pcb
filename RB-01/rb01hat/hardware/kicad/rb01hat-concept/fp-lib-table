@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "RB01HAT") (type "KiCad") (uri "${KIPRJMOD}/lib/RB01HAT.pretty") (options "") (descr "RB01HAT concept footprints"))
+)

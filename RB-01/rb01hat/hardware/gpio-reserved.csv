@@ -1,0 +1,13 @@
+bcm,status,allowed_nets,reason
+0,rb-ems,I2C0_SDA,RB-EMS: I2C0 SDA (ADS1115 + air-quality sensor; ems-adc.json dev 0). HAT+ deviation: ID pins shared with sensors
+1,rb-ems,I2C0_SCL,RB-EMS: I2C0 SCL (ADS1115 + air-quality sensor; ems-adc.json dev 0). HAT+ deviation: ID pins shared with sensors
+4,rb-ems,,RB-EMS: FLARM OUT (UART2 TXD) to the traffic annunciators - off-HAT
+5,rb-ems,,RB-EMS v3.0 scheme: UART group with FLARM (UART2 RXD) - off-HAT; function to confirm
+12,rb-ems,,RB-EMS: landing gear LEFT switch (ems-gpio.json gearleft) - off-HAT
+14,rb-ems,,RB-EMS: UART GPS TXD - off-HAT
+15,rb-ems,,RB-EMS: UART GPS RXD - off-HAT
+16,rb-ems,,RB-EMS: landing gear RIGHT switch (ems-gpio.json gearright) - off-HAT
+17,rb-ems,,RB-EMS: 5th MAX31856 CS on SPI1 (ems-chtegt.json outsidetemperature; v3.0 image: OIL T.) - not in the HAT list
+18,reserved,,SPI1 CE0 is driven by spidev1.0 (dtoverlay=spi1-1cs): do not connect (RB-EMS scheme)
+22,rb-ems,,RB-EMS: engine RPM pulse input (ems-rpm.json enginerpm) - off-HAT
+25,rb-ems,,RB-EMS: landing gear NOSE switch (ems-gpio.json gearnose) - off-HAT

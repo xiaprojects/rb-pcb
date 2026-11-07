@@ -1,0 +1,27 @@
+item,refs,qty,description,example_source,notes
+1,J1,1,DIY Proto HAT for Raspberry Pi 5/4/3 (red; 65x56 mm; labelled GPIO breakout; EEPROM footprint) incl. 2x20 female header + M2.5 standoffs/screws/nuts,AliExpress 1005010001574209,The kit standoffs/header give ~11 mm spacing: too low for the Active Cooler (see docs/03-mechanical.md)
+2,,1,Pre-formed U jumper wire kit - 14 lengths 2-125 mm (spans of 1-50 holes at 2.54 mm),AliExpress 1005004505328512,Colours encode LENGTH not signal
+3,U1,1,ICM-20948 breakout with 1.8 V VDDIO regulator + level shifters,Adafruit 4554 or SparkFun SEN-15335,Reject modules that tie VDDIO to 3.3 V (VDDIO max 1.95 V)
+4,U2,1,BME680 breakout (I2C),Adafruit 3660 or equivalent,Check default address (0x76/0x77) and update hardware/parts.csv
+5,U3-U6;U9-U12,8,MAX31856 thermocouple breakout with 2-pos terminal,Adafruit 3263 or equivalent,CHT1-4 + EGT1-4. Qualify one module first (docs/04-diy-build.md section 2)
+6,,8,Thermocouple type K with insulated (ungrounded) junction (CHT + EGT probes),-,Probably already installed on the engine. IEC colours: + green / - white. Type K negative leg (alumel) is magnetic
+7,U7,1,MS4525DO-DS3AI001DP differential pressure sensor (3.3 V; I2C 0x28; +/-1 psi),TE Connectivity (bare DIP) or breakout,A DS5 (5 V) part needs 5 V supply + I2C level shifter: avoid
+8,,1,Silicone tube for MS4525DO ports (size to the sensor barbs),-,Plus pitot/static lines
+9,U8,1,ADS1115 breakout,Adafruit 1085 or generic,Powered at 5 V (behind U14); keep its own pull-ups (they sit on the 5 V side)
+10,U14,1,4-ch bidirectional I2C level-shifter module 3.3 V <-> 5 V (BSS138) or PCA9306 breakout,AliExpress / SparkFun BOB-15439,LV = 3V3; HV = 5V
+11,R1-R8,8,Resistor 10 kOhm 1/4 W,-,CS pull-ups
+12,R11;R12,2,Resistor 3.9 kOhm 1/4 W,-,I2C0 pull-ups (the Pi has none on GPIO0/1)
+13,C1,1,Capacitor 22 uF 10 V (electrolytic or X5R),-,3V3 bulk
+14,C2;C3,2,Capacitor 100 nF X7R 2.54 mm pitch,-,C2 = 3V3 rail; C3 = at the MS4525DO supply pin
+15,J2,1,Screw terminal 5-pos 3.5 or 5.08 mm pitch,-,ADC inputs (0-5 V max)
+16,J11;J12,2,2x5 IDC box header 2.54 mm,-,Plus 2x IDC 10-way female plugs and 15 cm of 10-way ribbon
+17,,3,Female header strip 1x40 2.54 mm (breakable),-,Sockets for every module (replaceable modules)
+18,,2,Male header strip 1x40 2.54 mm right-angle,-,Vertical TC cards
+19,,1,2x20 GPIO riser / stacking header (female top; male pins bottom) 2.54 mm,-,Stack option S1 (~20 mm); see docs/03-mechanical.md
+20,,4,M2.5 brass standoff female-female (length per stack option: 20 mm for S1),-,Plus M2.5x6 screws
+21,,1,Double-sided perfboard ~30x70 mm (extension carrier for the EGT bank),-,
+22,,1,Extension plate 3D printed PETG or ASA,mechanical/extension-plate.md,
+23,,1,Kapton tape,-,Insulate HAT underside above the Active Cooler
+24,,1,Raspberry Pi Active Cooler,Raspberry Pi,Host accessory - assumed fitted
+25,,1,Stranded silicone wire 26 AWG (assorted colours),-,Pigtails and off-board runs
+26,U13;R13;TP1,1,OPTIONAL HAT EEPROM set: CAT24C32 SOIC-8 + 1 kOhm,onsemi CAT24C32,DNP on DIY. Pull-ups R11/R12 are already fitted for I2C0

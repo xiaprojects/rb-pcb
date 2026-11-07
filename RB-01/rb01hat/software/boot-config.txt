@@ -1,0 +1,24 @@
+# RB01HAT - lines for /boot/firmware/config.txt on the Raspberry Pi 5 (then reboot).
+# Bus layout follows the RB-EMS pin scheme used by rb-ems-go. Keep in sync with docs/05-bringup.md.
+
+# I2C1 on GPIO2/GPIO3 -> /dev/i2c-1: ICM-20948 (IMU) and MS4525DO (airspeed).
+dtparam=i2c_arm=on
+# 100 kHz for bring-up on hand wiring; raise to 400000 once everything passes.
+dtparam=i2c_arm_baudrate=100000
+
+# I2C0 on GPIO0/GPIO1 -> /dev/i2c-0: BME680 (air quality) and ADS1115 (rb-ems-go adc "dev": "0").
+# Pi 5 only. Do NOT also set dtparam=i2c_vc=on (the overlays README says the two conflict).
+dtoverlay=i2c0-pi5
+
+# SPI0 -> /dev/spidev0.0 without any kernel chip-select, so GPIO7 and GPIO8 are free to be
+# the manual chip-selects of EGT4 and EGT2 (rb-ems-go "gpio": 7 / 8).
+# Do NOT use dtparam=spi=on: it claims GPIO7/8 as CE1/CE0.
+dtoverlay=spi0-0cs
+
+# SPI1 -> /dev/spidev1.0 with one kernel chip-select on GPIO18 (leave GPIO18 unconnected).
+# The CHT chip-selects (GPIO13/26/6/27) and GPIO17 are driven by software.
+dtoverlay=spi1-1cs
+
+# Not part of the HAT, but used by the RB system on the same header:
+#   UART GPS on GPIO14/15, FLARM on UART2 GPIO4/5 (dtoverlay=uart2-pi5), RPM on GPIO22,
+#   landing gear on GPIO25/12/16.
